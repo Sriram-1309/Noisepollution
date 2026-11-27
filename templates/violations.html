@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% set active_page = 'violations' %}
+{% block title %}Violation Monitoring{% endblock %}
+{% block page_title %}Violation Monitoring{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <p class="text-muted mb-0">Track noise limit violations across all monitoring zones</p>
+    <button class="btn btn-warning" id="btnDetectViolations"><i class="fas fa-search me-1"></i>Detect New Violations</button>
+</div>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md"><div class="card stat-card"><div class="card-body text-center"><h6 class="text-muted small">Total</h6><h3 id="totalViolations">--</h3></div></div></div>
+    <div class="col-md"><div class="card stat-card border-start-danger"><div class="card-body text-center"><h6 class="text-muted small">Critical</h6><h3 id="criticalCount" class="text-danger">--</h3></div></div></div>
+    <div class="col-md"><div class="card stat-card border-start-orange"><div class="card-body text-center"><h6 class="text-muted small">High</h6><h3 id="highCount" class="text-orange">--</h3></div></div></div>
+    <div class="col-md"><div class="card stat-card border-start-warning"><div class="card-body text-center"><h6 class="text-muted small">Medium</h6><h3 id="mediumCount" class="text-warning">--</h3></div></div></div>
+    <div class="col-md"><div class="card stat-card border-start-success"><div class="card-body text-center"><h6 class="text-muted small">Low</h6><h3 id="lowCount" class="text-success">--</h3></div></div></div>
+</div>
+
+<!-- Filters -->
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-2"><input type="date" class="form-control form-control-sm" id="vStartDate" placeholder="Start Date"></div>
+            <div class="col-md-2"><input type="date" class="form-control form-control-sm" id="vEndDate" placeholder="End Date"></div>
+            <div class="col-md-2"><select class="form-select form-select-sm" id="vZoneType"><option value="">All Zones</option>
+                <option value="residential">Residential</option><option value="commercial">Commercial</option><option value="industrial">Industrial</option>
+                <option value="silence">Silence</option><option value="school">School</option><option value="hospital">Hospital</option><option value="traffic">Traffic</option></select></div>
+            <div class="col-md-2"><select class="form-select form-select-sm" id="vSeverity"><option value="">All Severity</option>
+                <option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option><option value="critical">Critical</option></select></div>
+            <div class="col-md-auto">
+                <button class="btn btn-sm btn-primary" id="btnApplyVFilters">Apply</button>
+                <button class="btn btn-sm btn-outline-secondary" id="btnClearVFilters">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Violations Table -->
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr><th>ID</th><th>Sensor</th><th>Location</th><th>Zone</th><th>Noise (dB)</th><th>Limit (dB)</th><th>Exceed</th><th>Severity</th><th>Time</th><th>Action</th></tr>
+                </thead>
+                <tbody id="violationsTableBody"><tr><td colspan="10" class="text-center p-4">Loading...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal fade" id="violationDetailModal" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content">
+    <div class="modal-header bg-danger text-white"><h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Violation Details</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+    <div class="modal-body" id="violationDetailBody">Loading...</div>
+</div></div></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/violations.js') }}"></script>
+{% endblock %}
+

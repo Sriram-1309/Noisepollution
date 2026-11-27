@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% set active_page = 'analytics' %}
+{% block title %}Time-Series Analytics{% endblock %}
+{% block page_title %}Time-Series Noise Analytics{% endblock %}
+
+{% block content %}
+<p class="text-muted mb-3">Study noise level patterns over time using statistical analysis</p>
+
+<!-- Controls -->
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-2"><select class="form-select form-select-sm" id="analyticsSensor"><option value="">All Sensors</option></select></div>
+            <div class="col-md-2"><select class="form-select form-select-sm" id="analyticsZone"><option value="">All Zones</option></select></div>
+            <div class="col-md-2"><input type="date" class="form-control form-control-sm" id="analyticsStart"></div>
+            <div class="col-md-2"><input type="date" class="form-control form-control-sm" id="analyticsEnd"></div>
+            <div class="col-md-2"><select class="form-select form-select-sm" id="analyticsInterval"><option value="hour">Hourly</option><option value="day">Daily</option></select></div>
+            <div class="col-md-auto"><button class="btn btn-sm btn-primary" id="btnApplyAnalytics"><i class="fas fa-filter me-1"></i>Apply</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row g-3 mb-4">
+    <div class="col-lg-6">
+        <div class="card"><div class="card-header bg-white"><h6 class="mb-0"><i class="fas fa-chart-line me-2"></i>Hourly Noise Trends</h6></div>
+        <div class="card-body"><canvas id="hourlyTrendChart" height="150"></canvas></div></div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card"><div class="card-header bg-white"><h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Daily Averages</h6></div>
+        <div class="card-body"><canvas id="dailyAvgChart" height="150"></canvas></div></div>
+    </div>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-lg-6">
+        <div class="card"><div class="card-header bg-white"><h6 class="mb-0"><i class="fas fa-balance-scale me-2"></i>Zone Comparison</h6></div>
+        <div class="card-body"><canvas id="zoneCompareChart" height="200"></canvas></div></div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card"><div class="card-header bg-white"><h6 class="mb-0"><i class="fas fa-clock me-2"></i>Peak Noise Hours</h6></div>
+        <div class="card-body"><canvas id="peakHoursChart" height="200"></canvas></div></div>
+    </div>
+</div>
+
+<!-- Sensitive Locations -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card"><div class="card-header bg-white"><h6 class="mb-0"><i class="fas fa-hospital me-2"></i>School &amp; Hospital Noise vs Limits</h6></div>
+        <div class="card-body"><canvas id="sensitiveChart" height="100"></canvas></div></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+{% endblock %}
+

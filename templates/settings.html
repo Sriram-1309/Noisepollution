@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% set active_page = 'settings' %}
+{% block title %}Settings{% endblock %}
+{% block page_title %}Settings &amp; Noise Limits{% endblock %}
+
+{% block content %}
+<!-- Noise Limits -->
+<div class="card mb-4">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h6 class="mb-0"><i class="fas fa-sliders-h me-2"></i>Noise Limit Rules</h6>
+        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#ruleModal" onclick="openAddRuleModal()"><i class="fas fa-plus me-1"></i>Add Rule</button>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-info small mb-3"><i class="fas fa-info-circle me-1"></i>These are demonstration values inspired by CPCB guidelines. They should not be treated as official regulatory limits.</div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light"><tr><th>Zone Type</th><th>Day Limit (dB)</th><th>Night Limit (dB)</th><th>Day Start</th><th>Night Start</th><th>Description</th><th>Actions</th></tr></thead>
+                <tbody id="limitsTableBody"><tr><td colspan="7" class="text-center p-3">Loading...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Data Management -->
+<div class="card mb-4">
+    <div class="card-header bg-white"><h6 class="mb-0"><i class="fas fa-database me-2"></i>Data Management</h6></div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <h6>Generate Simulated Readings</h6>
+                <div class="row g-2 mb-2">
+                    <div class="col"><input type="number" class="form-control form-control-sm" id="readingCount" value="500" placeholder="Count"></div>
+                    <div class="col"><input type="number" class="form-control form-control-sm" id="hoursBack" value="48" placeholder="Hours back"></div>
+                    <div class="col-auto"><button class="btn btn-sm btn-primary" id="btnGenerate"><i class="fas fa-play me-1"></i>Generate</button></div>
+                </div>
+                <button class="btn btn-sm btn-warning w-100 mb-2" id="btnDetectViolations"><i class="fas fa-search me-1"></i>Detect Violations</button>
+            </div>
+            <div class="col-md-6">
+                <h6>Reset Options</h6>
+                <button class="btn btn-sm btn-outline-danger w-100 mb-2" id="btnResetData"><i class="fas fa-eraser me-1"></i>Reset Readings &amp; Violations</button>
+                <button class="btn btn-sm btn-danger w-100" id="btnReseed"><i class="fas fa-redo me-1"></i>Full Reset &amp; Re-seed Demo Data</button>
+                <p class="small text-muted mt-2"><i class="fas fa-exclamation-triangle me-1"></i>Reset will permanently delete data.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About -->
+<div class="card mb-4">
+    <div class="card-header bg-white"><h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>About</h6></div>
+    <div class="card-body">
+        <p><strong>Noise Pollution Intelligence Dashboard</strong> &mdash; A college project for monitoring, analyzing, and visualizing noise pollution using simulated sensor data.</p>
+        <p class="small text-muted mb-0">Built with Flask, SQLite, Leaflet.js, Chart.js, Bootstrap 5 &bull; Demo city: Hyderabad, India &bull; All data is simulated</p>
+    </div>
+</div>
+
+<!-- Rule Modal -->
+<div class="modal fade" id="ruleModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title" id="ruleModalTitle">Add Rule</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+    <div class="modal-body">
+        <input type="hidden" id="ruleId">
+        <div class="mb-3"><label class="form-label">Zone Type</label><input type="text" class="form-control" id="ruleZoneType"></div>
+        <div class="row mb-3">
+            <div class="col-6"><label class="form-label">Day Limit (dB)</label><input type="number" class="form-control" id="ruleDayLimit"></div>
+            <div class="col-6"><label class="form-label">Night Limit (dB)</label><input type="number" class="form-control" id="ruleNightLimit"></div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6"><label class="form-label">Day Start Hour</label><input type="number" class="form-control" id="ruleDayStart" value="6" min="0" max="23"></div>
+            <div class="col-6"><label class="form-label">Night Start Hour</label><input type="number" class="form-control" id="ruleNightStart" value="22" min="0" max="23"></div>
+        </div>
+        <div class="mb-3"><label class="form-label">Description</label><textarea class="form-control" id="ruleDescription" rows="2"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button class="btn btn-primary" id="btnSaveRule">Save</button></div>
+</div></div></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}
+

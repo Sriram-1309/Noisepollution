@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% set active_page = 'reports' %}
+{% block title %}Reports{% endblock %}
+{% block page_title %}Noise Pollution Reports{% endblock %}
+
+{% block content %}
+<p class="text-muted mb-3">Generate comprehensive noise pollution reports with export options</p>
+
+<!-- Filters & Generate -->
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-2"><input type="date" class="form-control form-control-sm" id="reportStartDate"></div>
+            <div class="col-md-2"><input type="date" class="form-control form-control-sm" id="reportEndDate"></div>
+            <div class="col-md-2"><select class="form-select form-select-sm" id="reportZoneType"><option value="">All Zones</option>
+                <option value="residential">Residential</option><option value="commercial">Commercial</option><option value="industrial">Industrial</option>
+                <option value="silence">Silence</option><option value="school">School</option><option value="hospital">Hospital</option><option value="traffic">Traffic</option></select></div>
+            <div class="col-md-auto"><button class="btn btn-sm btn-primary" id="btnGenerateReport"><i class="fas fa-file-alt me-1"></i>Generate Report</button></div>
+            <div class="col-md-auto ms-auto">
+                <button class="btn btn-sm btn-success" id="btnExportReadings"><i class="fas fa-download me-1"></i>Readings CSV</button>
+                <button class="btn btn-sm btn-info text-white" id="btnExportViolations"><i class="fas fa-download me-1"></i>Violations CSV</button>
+                <button class="btn btn-sm btn-outline-secondary" id="btnPrint"><i class="fas fa-print me-1"></i>Print</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4" id="reportSummaryCards">
+    <div class="col-md-3"><div class="card stat-card"><div class="card-body text-center"><h6 class="text-muted small">Total Readings</h6><h3 id="rptTotalReadings">--</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card"><div class="card-body text-center"><h6 class="text-muted small">Total Violations</h6><h3 id="rptTotalViolations" class="text-danger">--</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card"><div class="card-body text-center"><h6 class="text-muted small">Most Affected Zone</h6><h5 id="rptMostAffected" class="text-warning">--</h5></div></div></div>
+    <div class="col-md-3"><div class="card stat-card"><div class="card-body text-center"><h6 class="text-muted small">Peak Hour</h6><h3 id="rptPeakHour">--</h3></div></div></div>
+</div>
+
+<!-- Report Sections -->
+<div class="row g-3 mb-4">
+    <div class="col-lg-6">
+        <div class="card"><div class="card-header bg-white"><h6 class="mb-0">Most Affected Zones</h6></div>
+        <div class="card-body" id="affectedZonesContainer"><p class="text-muted">Click 'Generate Report' to load data</p></div></div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card"><div class="card-header bg-white"><h6 class="mb-0">Peak Noise Periods</h6></div>
+        <div class="card-body"><canvas id="peakPeriodsChart" height="150"></canvas></div></div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-lg-6">
+        <div class="card"><div class="card-header bg-white"><h6 class="mb-0"><i class="fas fa-hospital me-2"></i>School &amp; Hospital Risk</h6></div>
+        <div class="card-body" id="sensitiveRiskContainer"><p class="text-muted">Click 'Generate Report' to load data</p></div></div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card"><div class="card-header bg-white"><h6 class="mb-0"><i class="fas fa-fire me-2"></i>Top 5 Hotspots</h6></div>
+        <div class="card-body" id="topHotspotsContainer"><p class="text-muted">Click 'Generate Report' to load data</p></div></div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-white"><h6 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Recommendations</h6></div>
+    <div class="card-body" id="reportRecommendations"><p class="text-muted">Click 'Generate Report' to load data</p></div>
+</div>
+
+<!-- Summary Text -->
+<div class="card mb-4">
+    <div class="card-header bg-white"><h6 class="mb-0">Report Summary</h6></div>
+    <div class="card-body" id="reportSummaryText"><p class="text-muted">Click 'Generate Report' to load data</p></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+{% endblock %}
+

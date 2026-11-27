@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% set active_page = 'map' %}
+{% block title %}Noise Map{% endblock %}
+{% block page_title %}Interactive Noise Pollution Map{% endblock %}
+
+{% block content %}
+<p class="text-muted mb-3">Explore sensor locations, noise levels, and violation hotspots across Hyderabad</p>
+
+<!-- Filter Controls -->
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-2">
+                <select class="form-select form-select-sm" id="filterZoneType">
+                    <option value="">All Zone Types</option>
+                    <option value="residential">Residential</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="industrial">Industrial</option>
+                    <option value="silence">Silence Zone</option>
+                    <option value="school">School</option>
+                    <option value="hospital">Hospital</option>
+                    <option value="traffic">Traffic</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-select form-select-sm" id="filterNoiseLevel">
+                    <option value="">All Noise Levels</option>
+                    <option value="low">Low (&lt;55 dB)</option>
+                    <option value="moderate">Moderate (55-65 dB)</option>
+                    <option value="high">High (65-75 dB)</option>
+                    <option value="very_high">Very High (&gt;75 dB)</option>
+                </select>
+            </div>
+            <div class="col-md-auto">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="toggleMarkers" checked>
+                    <label class="form-check-label small" for="toggleMarkers">Markers</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="toggleHeatmap" checked>
+                    <label class="form-check-label small" for="toggleHeatmap">Heatmap</label>
+                </div>
+            </div>
+            <div class="col-md-auto">
+                <button class="btn btn-sm btn-primary" id="btnRefresh"><i class="fas fa-sync"></i> Refresh</button>
+                <button class="btn btn-sm btn-outline-secondary" id="btnResetFilters">Reset</button>
+            </div>
+            <div class="col-md-auto ms-auto">
+                <span class="legend-item"><span class="legend-box" style="background:#28a745"></span>Low</span>
+                <span class="legend-item"><span class="legend-box" style="background:#ffc107"></span>Moderate</span>
+                <span class="legend-item"><span class="legend-box" style="background:#fd7e14"></span>High</span>
+                <span class="legend-item"><span class="legend-box" style="background:#dc3545"></span>Very High</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Map -->
+<div class="card mb-3">
+    <div class="card-body p-0">
+        <div id="noiseMap" style="height:calc(100vh - 340px);min-height:500px;border-radius:12px;"></div>
+    </div>
+</div>
+
+<!-- Summary Bar -->
+<div class="card">
+    <div class="card-body py-2 text-center">
+        <span class="me-4"><i class="fas fa-satellite-dish me-1"></i> <strong id="sensorCount">0</strong> sensors</span>
+        <span class="me-4"><i class="fas fa-exclamation-triangle me-1 text-danger"></i> <strong id="violationMapCount">0</strong> violations</span>
+        <span><i class="fas fa-volume-up me-1"></i> Average: <strong id="avgMapNoise">--</strong> dB</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}
+
